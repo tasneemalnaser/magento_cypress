@@ -49,15 +49,30 @@ it.skip('add random item from men category', () => {
 });
 
 
-it.skip('add random item from gear category', () => {
+it('add random item from gear category', () => {
   cy.visit("https://magento.softwaretestingboard.com/")
   cy.wait(3000);
   cy.get('#ui-id-6').click()
-  cy.add_items();
-  cy.wait(3000);
-  
-});
+  let RandomItemToSelect = Math.floor(Math.random() * 4);
 
+    cy.get(".product-items")
+      .find(".product-item")
+      .eq(RandomItemToSelect)
+      .click();
+
+    cy.get(".stock > span")
+      .invoke("text")
+      .then((theText) => {
+        if (theText == "In stock") {
+          cy.get("#product-addtocart-button").click();
+        } else {
+          alert("sorry this item is not there ");
+        }
+      });
+    cy.wait(5000);
+  });
+  
+  
 describe('login test case', () => {
   it('log in with correct username and password', () => {
     cy.visit("https://magento.softwaretestingboard.com/")
